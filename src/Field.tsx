@@ -152,6 +152,7 @@ class Field extends React.Component<InternalFieldProps, FieldState> implements F
     if (props.fieldContext) {
       const { getInternalHooks }: InternalFormInstance = props.fieldContext;
       const { initEntityValue } = getInternalHooks(HOOK_MARK);
+      // 调用useForm里面的initEntityValue函数，当前节点设置了默认值，就更新默认值，只在当前节点初始化的时候执行一次
       initEntityValue(this);
     }
   }
@@ -682,8 +683,8 @@ class Field extends React.Component<InternalFieldProps, FieldState> implements F
 }
 
 function WrapperField<Values = any>({ name, ...restProps }: FieldProps<Values>) {
-  const fieldContext = React.useContext(FieldContext);
-  const listContext = React.useContext(ListContext);
+  const fieldContext = React.useContext(FieldContext); // 获取操作表单的函数
+  const listContext = React.useContext(ListContext); // 获取列表的上下文
   const namePath = name !== undefined ? getNamePath(name) : undefined;
 
   const isMergedListField = restProps.isListField ?? !!listContext;
